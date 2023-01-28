@@ -1,0 +1,27 @@
+previewsEnabled: true
+previewsExpireAfterDays: 3
+
+services:
+  - type: web
+    name: render-sample
+    env: ruby
+    plan: free
+    previewPlan: free
+    region: singapore
+    buildCommand: "bin/render-build.sh"
+    startCommand: "bundle exec puma -C config/puma.rb"
+    envVars:
+      - key: RAILS_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: elephant
+          property: connectionString
+
+databases:
+  - name: elephant
+    plan: free
+    previewPlan: free
+    postgresMajorVersion: 14
+    region: singapore
+    ipAllowList: [] # only allow internal connections
